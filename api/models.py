@@ -40,3 +40,16 @@ class Token(models.Model):
     class Meta:
         verbose_name = 'Токен пользователя'
         verbose_name_plural = 'Токены пользователей'
+
+
+class Post(AutoDateModel):
+    title = models.CharField(max_length=1000, verbose_name='Заголовок')
+    text = models.TextField(verbose_name='Текст')
+    account = models.ForeignKey(Account, verbose_name='Аккаунт', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = 'Пост'
+        verbose_name_plural = 'Посты'
