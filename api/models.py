@@ -21,7 +21,7 @@ class Account(AutoDateModel):
     username = models.CharField(max_length=1000, verbose_name='Имя пользователя')
     birth_date = models.DateField(verbose_name='Дата рождения')
     gender = models.CharField(max_length=1, verbose_name='Пол', choices=GENDER_LIST)
-    description = models.TextField(verbose_name='О себе', null=True, blank=True)
+    description = models.TextField(verbose_name='О себе', blank=True, default='')
     avatar = models.ImageField(verbose_name='Аватар', upload_to='avatars', null=True, blank=True)
 
     def __str__(self):
