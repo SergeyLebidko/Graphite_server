@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Account, Token, Post
+from .models import Account, Token, Post, Comment
 
 
 @admin.register(Account)
@@ -22,3 +22,13 @@ class PostAdmin(admin.ModelAdmin):
     list_display = ['title', 'account']
     list_display_links = ['title']
     search_fields = ['account']
+
+
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ['short_comment_text', 'account']
+    list_display_links = ['short_comment_text']
+    search_fields = ['account']
+
+    @staticmethod
+    def short_comment_text(comment):
+        return str(comment)

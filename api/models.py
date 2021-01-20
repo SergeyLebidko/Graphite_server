@@ -56,3 +56,17 @@ class Post(AutoDateModel):
     class Meta:
         verbose_name = 'Пост'
         verbose_name_plural = 'Посты'
+
+
+class Comment(AutoDateModel):
+    text = models.TextField(verbose_name='Текст')
+    account = models.ForeignKey(Account, verbose_name='Аккаунт', on_delete=models.CASCADE)
+
+    def __str__(self):
+        if len(self.text) < 50:
+            return self.text
+        return self.text[:50] + '...'
+
+    class Meta:
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
