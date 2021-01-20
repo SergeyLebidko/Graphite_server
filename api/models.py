@@ -70,3 +70,29 @@ class Comment(AutoDateModel):
     class Meta:
         verbose_name = 'Комментарий'
         verbose_name_plural = 'Комментарии'
+
+
+class PostLike(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, verbose_name='Лайк под постом')
+    account = models.ForeignKey(Account, verbose_name='Аккаунт', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'Лайк пользователя {self.account} под постом {self.post}'
+
+    class Meta:
+        verbose_name = 'Лайк под постом'
+        verbose_name_plural = 'Лайки под постами'
+        unique_together = ['post', 'account']
+
+
+class CommentLike(models.Model):
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, verbose_name='Лайк под комментарием')
+    account = models.ForeignKey(Account, verbose_name='Аккаунт', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'Лайк пользователя {self.account} под комментарием {self.comment}'
+
+    class Meta:
+        verbose_name = 'Лайк под комментарием'
+        verbose_name_plural = 'Лайки под комментариями'
+        unique_together = ['comment', 'account']
