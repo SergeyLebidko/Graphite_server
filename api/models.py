@@ -37,6 +37,9 @@ class Token(models.Model):
     token = models.CharField(max_length=32, verbose_name='Токен пользователя')
     account = models.ForeignKey(Account, verbose_name='Аккаунт', on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.token
+
     class Meta:
         verbose_name = 'Токен пользователя'
         verbose_name_plural = 'Токены пользователей'
