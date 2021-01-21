@@ -48,7 +48,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'middleware.account_middleware'
+    'middleware.account_middleware',
+    'middleware.cors_middleware'
 ]
 
 ROOT_URLCONF = 'Graphite_server.urls'
@@ -123,3 +124,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Длина токена пользователя
+ACCOUNT_TOKEN_SIZE = 32
+
+# Хост для CORS
+CORS_HOST = '*'
