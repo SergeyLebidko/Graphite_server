@@ -19,8 +19,8 @@ class Account(AutoDateModel):
     login = models.CharField(max_length=1000, verbose_name='Логин', unique=True)
     password = models.CharField(max_length=1000, verbose_name='Пароль')
     username = models.CharField(max_length=1000, verbose_name='Имя пользователя')
-    birth_date = models.DateField(verbose_name='Дата рождения')
-    gender = models.CharField(max_length=1, verbose_name='Пол', choices=GENDER_LIST)
+    birth_date = models.DateField(verbose_name='Дата рождения', null=True, blank=True)
+    gender = models.CharField(max_length=1, verbose_name='Пол', choices=GENDER_LIST, null=True, blank=True)
     description = models.TextField(verbose_name='О себе', blank=True, default='')
     avatar = models.ImageField(verbose_name='Аватар', upload_to='avatars', null=True, blank=True)
 
