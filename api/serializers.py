@@ -16,9 +16,6 @@ class AccountSerializer(serializers.ModelSerializer):
         validated_data['password'] = to_hash(password)
         return serializers.ModelSerializer.create(self, validated_data)
 
-    def update(self, instance, validated_data):
-        return serializers.ModelSerializer.update(self, instance, validated_data)
-
     class Meta:
         model = Account
         fields = '__all__'
