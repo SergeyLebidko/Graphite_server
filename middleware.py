@@ -20,6 +20,12 @@ def cors_middleware(next_view):
     def middleware(request):
         response = next_view(request)
         response['Access-Control-Allow-Origin'] = settings.CORS_HOST
+
+        # Добавляем поддержку preflight-запросов
+        # В случае этого проекта подобные запросы выполняются браузером из-за наличия заголовка Authorization
+        if request.method == 'OPTIONS':
+            response['Access-Control-Allow-Methods'] = ['GET', 'POST', 'PATCH']
+            response['Access-Control-Allow-Headers'] = ['Authorization']
         return response
 
     return middleware
