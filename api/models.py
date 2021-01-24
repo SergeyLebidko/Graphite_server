@@ -16,9 +16,19 @@ class Account(AutoDateModel):
         (FEMALE, 'Женщина')
     )
 
-    login = models.CharField(max_length=1000, verbose_name='Логин', unique=True)
+    username = models.CharField(
+        max_length=1000,
+        verbose_name='Имя пользователя',
+        unique=True,
+        error_messages={'unique': 'Аккаунт с таким именем пользователя уже существует'}
+    )
+    login = models.CharField(
+        max_length=1000,
+        verbose_name='Логин',
+        unique=True,
+        error_messages={'unique': 'Аккаунт с таким логином уже существует'}
+    )
     password = models.CharField(max_length=1000, verbose_name='Пароль')
-    username = models.CharField(max_length=1000, verbose_name='Имя пользователя', unique=True)
     birth_date = models.DateField(verbose_name='Дата рождения', null=True, blank=True)
     gender = models.CharField(max_length=1, verbose_name='Пол', choices=GENDER_LIST, null=True, blank=True)
     description = models.TextField(verbose_name='О себе', blank=True, default='')
