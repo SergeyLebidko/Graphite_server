@@ -1,16 +1,28 @@
 from django.conf import settings
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 
 from utils import to_hash, create_random_string
 from .models import Account, Token
 from .serializers import AccountSerializer
+from .permissions import HasAccountPermission
 
 
 @api_view(['GET'])
 def gender_list(request):
     return Response(dict(Account.GENDER_LIST), status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def register_account(request):
+    """Создает новый аккаунт"""
+
+    serializer = AccountSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
@@ -28,6 +40,7 @@ def login(request):
 
 
 @api_view(['GET'])
+@permission_classes([HasAccountPermission])
 def logout(request):
     """Удалает переданный токен (тем самым осуществляя выход из аккаунта на устройстве с данным токеном)"""
 
@@ -37,22 +50,10 @@ def logout(request):
     return Response(status=status.HTTP_200_OK)
 
 
-@api_view(['POST'])
-def register_account(request):
-    """Создает новый аккаунт"""
-
-    serializer = AccountSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 @api_view(['GET'])
+@permission_classes([HasAccountPermission])
 def check_account(request):
     """Возвращает данные аккаунта по переданному токену"""
 
-    if request.account:
-        serializer = AccountSerializer(request.account)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    return Response(status=status.HTTP_404_NOT_FOUND)
+    serializer = AccountSerializer(request.account)
+    return Response(serializer.data, status=status.HTTP_200_OK)
