@@ -33,7 +33,7 @@ def login(request):
     requested_password = to_hash(request.data.get('password', ''))
     account = Account.objects.filter(login=requested_login, password=requested_password).first()
     if not account:
-        return Response({'error': 'Учетные данные не верны'}, status=status.HTTP_403_FORBIDDEN)
+        return Response({'error': 'Учетные данные не верны'}, status=status.HTTP_400_BAD_REQUEST)
     token = create_random_string(settings.ACCOUNT_TOKEN_SIZE)
     Token.objects.create(token=token, account=account)
     return Response({'token': token}, status=status.HTTP_200_OK)
@@ -42,11 +42,9 @@ def login(request):
 @api_view(['GET'])
 @permission_classes([HasAccountPermission])
 def logout(request):
-    """Удалает переданный токен (тем самым осуществляя выход из аккаунта на устройстве с данным токеном)"""
+    """Удаляет переданный токен (тем самым осуществляя выход из аккаунта на устройстве с данным токеном)"""
 
-    token = Token.objects.filter(token=request.token).first()
-    if token:
-        token.delete()
+    Token.objects.filter(token=request.token).first().delete()
     return Response(status=status.HTTP_200_OK)
 
 
