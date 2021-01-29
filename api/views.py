@@ -50,6 +50,15 @@ def logout(request):
 
 @api_view(['GET'])
 @permission_classes([HasAccountPermission])
+def logout_all_devices(request):
+    """Удаляет все токены пользователя (тем самым осуществляя выход на всех устройствах с сохраненными токенами)"""
+
+    Token.objects.filter(account=request.account).delete()
+    return Response(status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([HasAccountPermission])
 def check_account(request):
     """Возвращает данные аккаунта по переданному токену"""
 
