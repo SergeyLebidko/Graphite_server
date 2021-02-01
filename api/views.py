@@ -64,3 +64,15 @@ def check_account(request):
 
     serializer = AccountSerializer(request.account)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['PATCH'])
+@permission_classes([HasAccountPermission])
+def update_account(request):
+    """Изменяет у аккаунта имя пользователя"""
+
+    serializer = AccountSerializer(request.account, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
