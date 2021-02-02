@@ -69,10 +69,26 @@ def check_account(request):
 @api_view(['PATCH'])
 @permission_classes([HasAccountPermission])
 def update_account(request):
-    """Изменяет у аккаунта имя пользователя"""
+    """Изменяет у аккаунта любые поля, кроме лоигина и пароля (для их смены предусмотрены отдельные хуки)"""
 
     serializer = AccountSerializer(request.account, data=request.data, partial=True)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['PATCH'])
+@permission_classes([HasAccountPermission])
+def change_login(request):
+    """Изменяет логин аккаунта. Для подтверждения операции требует пароль"""
+
+    account = request.account
+    requested_login = request.data.get('login', '')
+    requested_password = to_hash(request.data.get('password', ''))
+    if requested_password != account.password:
+        return Response({'error': 'Пароль не верен'}, status=status.HTTP_400_BAD_REQUEST)
+
+    account.login = requested_login
+    account.save()
+    return Response(status=status.HTTP_200_OK)
