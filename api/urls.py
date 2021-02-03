@@ -1,7 +1,7 @@
 from django.urls import path
 
 from .views import gender_list, login, logout, logout_all_devices, register_account, check_account, \
-    update_account, change_login
+    update_account, change_login, change_password
 
 app_name = 'api'
 
@@ -13,5 +13,6 @@ urlpatterns = [
     path('register_account/', register_account, name='register_account'),
     path('check_account/', check_account, name='check_account'),
     path('update_account/', update_account, name='update_account'),
-    path('change_login/', change_login, name='change_login')
+    path('change_login/', change_login, name='change_login'),
+    path('change_password/', change_password, name='change_password')
 ]

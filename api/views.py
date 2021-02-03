@@ -96,3 +96,19 @@ def change_login(request):
     account.login = requested_login
     account.save()
     return Response(status=status.HTTP_200_OK)
+
+
+@api_view(['PATCH'])
+@permission_classes([HasAccountPermission])
+def change_password(request):
+    """Изменяет пароль аккаунта. Для подтверждения операции требует старый пароль"""
+
+    account = request.account
+    current_password = to_hash(request.data.get('password', ''))
+    next_password = to_hash(request.data.get('next_password', ''))
+    if current_password != account.password:
+        return Response({'error': 'Пароль не верен'}, status=status.HTTP_400_BAD_REQUEST)
+
+    account.password = next_password
+    account.save()
+    return Response(status=status.HTTP_200_OK)
