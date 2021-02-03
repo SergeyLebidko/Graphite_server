@@ -89,6 +89,10 @@ def change_login(request):
     if requested_password != account.password:
         return Response({'error': 'Пароль не верен'}, status=status.HTTP_400_BAD_REQUEST)
 
+    login_exists = Account.objects.filter(login=requested_login).exists()
+    if login_exists:
+        return Response({'error': 'Такой логин уже занят'}, status=status.HTTP_400_BAD_REQUEST)
+
     account.login = requested_login
     account.save()
     return Response(status=status.HTTP_200_OK)
