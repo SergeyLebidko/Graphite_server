@@ -84,8 +84,8 @@ def change_login(request):
     """Изменяет логин аккаунта. Для подтверждения операции требует пароль"""
 
     account = request.account
-    requested_login = request.data.get('login', '')
-    requested_password = to_hash(request.data.get('password', ''))
+    requested_login = request.data.get('login')
+    requested_password = to_hash(request.data.get('password'))
     if requested_password != account.password:
         return Response({'error': 'Пароль не верен'}, status=status.HTTP_400_BAD_REQUEST)
 
