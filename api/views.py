@@ -29,8 +29,8 @@ def register_account(request):
 def login(request):
     """По переданным данным (логин/пароль) создает и возвращает новый токен доступа"""
 
-    requested_login = request.data.get('login', '')
-    requested_password = to_hash(request.data.get('password', ''))
+    requested_login = request.data.get('login')
+    requested_password = to_hash(request.data.get('password'))
     account = Account.objects.filter(login=requested_login, password=requested_password).first()
     if not account:
         return Response({'error': 'Учетные данные не верны'}, status=status.HTTP_400_BAD_REQUEST)
@@ -104,8 +104,8 @@ def change_password(request):
     """Изменяет пароль аккаунта. Для подтверждения операции требует старый пароль"""
 
     account = request.account
-    current_password = to_hash(request.data.get('password', ''))
-    next_password = to_hash(request.data.get('next_password', ''))
+    current_password = to_hash(request.data.get('password'))
+    next_password = to_hash(request.data.get('next_password'))
     if current_password != account.password:
         return Response({'error': 'Пароль не верен'}, status=status.HTTP_400_BAD_REQUEST)
 
