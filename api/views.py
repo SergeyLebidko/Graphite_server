@@ -112,3 +112,17 @@ def change_password(request):
     account.password = next_password
     account.save()
     return Response(status=status.HTTP_200_OK)
+
+
+@api_view(['DELETE'])
+@permission_classes([HasAccountPermission])
+def remove_account(request):
+    """Удаляет аккаунт"""
+
+    account = request.account
+    requested_password = to_hash(request.data.get('password'))
+    if requested_password != account.password:
+        return Response({'error': 'Пароль не верен'}, status=status.HTTP_400_BAD_REQUEST)
+
+    account.delete()
+    return Response(status=status.HTTP_200_OK)
