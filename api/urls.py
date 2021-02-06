@@ -1,7 +1,9 @@
 from django.urls import path
 
+from rest_framework.routers import SimpleRouter
+
 from .views import gender_list, login, logout, logout_all_devices, register_account, check_account, \
-    update_account, change_login, change_password, remove_account
+    update_account, change_login, change_password, remove_account, PostViewSet
 
 app_name = 'api'
 
@@ -17,3 +19,7 @@ urlpatterns = [
     path('change_password/', change_password, name='change_password'),
     path('remove_account/', remove_account, name='remove_account')
 ]
+
+router = SimpleRouter()
+router.register('post', PostViewSet, basename='post')
+urlpatterns.extend(router.urls)

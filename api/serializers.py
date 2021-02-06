@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from utils import to_hash, create_random_string
-from .models import Account
+from .models import Account, Post
 
 
 class AccountSerializer(serializers.ModelSerializer):
@@ -26,4 +26,10 @@ class AccountSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Account
+        fields = '__all__'
+
+
+class PostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
         fields = '__all__'

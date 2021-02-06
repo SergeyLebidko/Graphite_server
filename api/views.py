@@ -1,12 +1,13 @@
 from django.conf import settings
 from rest_framework.decorators import api_view, permission_classes
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status
 
 from utils import to_hash, create_random_string
-from .models import Account, Token
-from .serializers import AccountSerializer
-from .permissions import HasAccountPermission
+from .models import Account, Token, Post
+from .serializers import AccountSerializer, PostSerializer
+from .permissions import HasAccountPermission, HasPostPermission
 
 
 @api_view(['GET'])
@@ -126,3 +127,12 @@ def remove_account(request):
 
     account.delete()
     return Response(status=status.HTTP_200_OK)
+
+
+class PostViewSet(ModelViewSet):
+    serializer_class = PostSerializer
+    permission_classes = [HasPostPermission]
+
+    def get_queryset(self):
+        queryset = Post.objects.all()
+        return queryset
