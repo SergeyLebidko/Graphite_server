@@ -24,7 +24,7 @@ def cors_middleware(next_view):
         # Добавляем поддержку preflight-запросов
         # В случае этого проекта подобные запросы выполняются браузером из-за наличия заголовка Authorization
         if request.method == 'OPTIONS':
-            response['Access-Control-Allow-Methods'] = 'GET, POST, PATCH'
+            response['Access-Control-Allow-Methods'] = 'GET, POST, PATCH, DELETE'
             response['Access-Control-Allow-Headers'] = 'Authorization'
         return response
 
