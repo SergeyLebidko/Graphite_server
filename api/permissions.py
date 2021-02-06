@@ -1,17 +1,20 @@
 from rest_framework.permissions import BasePermission, SAFE_METHODS
 
 
-class HasAccountPermission(BasePermission):
+class CustomBasePermission(BasePermission):
+    allowed_methods = None
 
     def has_permission(self, request, view):
-        if request.method == 'OPTIONS':
+        if not self.allowed_methods:
+            return False
+        if request.method in self.allowed_methods:
             return True
         return request.account is not None
 
 
-class HasPostPermission(BasePermission):
+class HasAccountPermission(CustomBasePermission):
+    allowed_methods = ['OPTIONS']
 
-    def has_permission(self, request, view):
-        if request.method in SAFE_METHODS:
-            return True
-        return request.account is not None
+
+class HasPostPermission(CustomBasePermission):
+    allowed_methods = SAFE_METHODS
