@@ -21,5 +21,5 @@ urlpatterns = [
 ]
 
 router = SimpleRouter()
-router.register('post', PostViewSet, basename='post')
+router.register('posts', PostViewSet, basename='post')
 urlpatterns.extend(router.urls)
