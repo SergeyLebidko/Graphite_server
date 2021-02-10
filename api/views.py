@@ -129,6 +129,16 @@ def remove_account(request):
     return Response(status=status.HTTP_200_OK)
 
 
+@api_view(['GET'])
+@permission_classes([HasAccountPermission])
+def account_stat(request):
+    """Возвращает статистику аккаунта: количество постов, лайков под ними и комментариев под ними"""
+
+    account = request.account
+    post_count = Post.objects.filter(account=account).count()
+    return Response(status=status.HTTP_200_OK)
+
+
 class PostViewSet(ModelViewSet):
     serializer_class = PostSerializer
     permission_classes = [HasPostPermission]
