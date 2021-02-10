@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from utils import to_hash, create_random_string
-from .models import Account, Token, Post
+from .models import Account, Token, Post, PostLike, Comment
 from .serializers import AccountSerializer, PostSerializer
 from .permissions import HasAccountPermission, HasPostPermission
 
@@ -136,7 +136,16 @@ def account_stat(request):
 
     account = request.account
     post_count = Post.objects.filter(account=account).count()
-    return Response(status=status.HTTP_200_OK)
+    like_count = PostLike.objects.filter(post__account=account).count()
+    comment_count = Comment.objects.filter(post__account=account).count()
+    return Response(
+        data={
+            'post_count': post_count,
+            'like_count': like_count,
+            'comment_count': comment_count
+        },
+        status=status.HTTP_200_OK
+    )
 
 
 class PostViewSet(ModelViewSet):
