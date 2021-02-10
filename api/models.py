@@ -71,6 +71,7 @@ class Post(AutoDateModel):
 class Comment(AutoDateModel):
     text = models.TextField(verbose_name='Текст')
     account = models.ForeignKey(Account, verbose_name='Аккаунт', on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, verbose_name='Пост', on_delete=models.CASCADE)
 
     def __str__(self):
         if len(self.text) < 50:
