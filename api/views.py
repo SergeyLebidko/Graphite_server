@@ -156,4 +156,7 @@ class PostViewSet(ModelViewSet):
 
     def get_queryset(self):
         queryset = Post.objects.all()
+        account = self.request.query_params.get('account')
+        if account:
+            queryset = queryset.filter(account=account)
         return queryset
