@@ -8,6 +8,7 @@ from utils import to_hash, create_random_string
 from .models import Account, Token, Post, PostLike, Comment
 from .serializers import AccountSerializer, PostSerializer
 from .permissions import HasAccountPermission, HasPostPermission
+from .pagination import CustomPagination
 
 
 @api_view(['GET'])
@@ -151,6 +152,7 @@ def account_stat(request):
 class PostViewSet(ModelViewSet):
     serializer_class = PostSerializer
     permission_classes = [HasPostPermission]
+    pagination_class = CustomPagination
 
     def get_queryset(self):
         queryset = Post.objects.all()
