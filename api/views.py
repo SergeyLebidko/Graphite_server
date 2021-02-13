@@ -155,7 +155,7 @@ class PostViewSet(ModelViewSet):
     pagination_class = CustomPagination
 
     def get_queryset(self):
-        queryset = Post.objects.all()
+        queryset = Post.objects.select_related('account').all()
         account = self.request.query_params.get('account')
         if account:
             queryset = queryset.filter(account=account)

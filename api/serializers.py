@@ -37,6 +37,8 @@ class PostSerializer(serializers.ModelSerializer):
         result = serializers.ModelSerializer.to_representation(self, instance)
         result['comment_count'] = comment_count
         result['like_count'] = like_count
+        result['account_avatar'] = instance.account.avatar.url
+        result['account_username'] = instance.account.username
         return result
 
     class Meta:
