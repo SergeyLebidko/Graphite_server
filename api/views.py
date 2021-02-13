@@ -133,9 +133,10 @@ def remove_account(request):
 
 @api_view(['GET'])
 def account_stat(request):
-    """Возвращает статистику аккаунта: количество постов, лайков под ними и комментариев под ними"""
+    """Возвращает статистику аккаунта: количество постов, лайков, комментариев и просмотров постов"""
 
-    account = request.query_params.get('account')
+    account_id = request.query_params.get('account')
+    account = Account.objects.get(pk=account_id)
     posts = Post.objects.filter(account=account)
 
     post_count = posts.count()
@@ -149,6 +150,27 @@ def account_stat(request):
             'like_count': like_count,
             'comment_count': comment_count,
             'total_views_count': total_views_count
+        },
+        status=status.HTTP_200_OK
+    )
+
+
+@api_view(['GET'])
+def post_stat(request):
+    """Возвращает статистику поста: количество просмотров, лайков и комментариев"""
+
+    post_id = request.query_params.get('post')
+    post = Post.objects.get(pk=post_id)
+
+    like_count = PostLike.objects.filter(post=post).count()
+    comment_count = Comment.objects.filter(post=post).count()
+    views_count = post.views_count
+
+    return Response(
+        data={
+            'like_count': like_count,
+            'comment_count': comment_count,
+            'views_count': views_count
         },
         status=status.HTTP_200_OK
     )
