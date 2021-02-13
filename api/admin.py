@@ -19,7 +19,7 @@ class TokenAdmin(admin.ModelAdmin):
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ['title', 'account', 'dt_created']
+    list_display = ['title', 'views_count', 'account', 'dt_created']
     list_display_links = ['title']
     search_fields = ['account']
 

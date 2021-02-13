@@ -58,6 +58,7 @@ class Token(models.Model):
 class Post(AutoDateModel):
     title = models.CharField(max_length=1000, verbose_name='Заголовок')
     text = models.TextField(verbose_name='Текст')
+    views_count = models.IntegerField(verbose_name='Количество просмотров', default=0)
     account = models.ForeignKey(Account, verbose_name='Аккаунт', on_delete=models.CASCADE)
 
     def __str__(self):
