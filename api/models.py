@@ -67,6 +67,7 @@ class Post(AutoDateModel):
     class Meta:
         verbose_name = 'Пост'
         verbose_name_plural = 'Посты'
+        ordering = ['-dt_created']
 
 
 class Comment(AutoDateModel):
