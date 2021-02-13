@@ -141,6 +141,9 @@ def account_stat(request):
 
     post_count = posts.count()
     total_views_count = posts.aggregate(cnt=Sum('views_count'))['cnt']
+    if total_views_count is None:
+        total_views_count = 0
+
     like_count = PostLike.objects.filter(post__account=account).count()
     comment_count = Comment.objects.filter(post__account=account).count()
 
