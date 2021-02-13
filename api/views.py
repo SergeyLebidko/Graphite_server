@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.db.models import Sum
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
@@ -131,19 +132,23 @@ def remove_account(request):
 
 
 @api_view(['GET'])
-@permission_classes([HasAccountPermission])
 def account_stat(request):
     """Возвращает статистику аккаунта: количество постов, лайков под ними и комментариев под ними"""
 
-    account = request.account
-    post_count = Post.objects.filter(account=account).count()
+    account = request.query_params.get('account')
+    posts = Post.objects.filter(account=account)
+
+    post_count = posts.count()
+    total_views_count = posts.aggregate(cnt=Sum('views_count'))['cnt']
     like_count = PostLike.objects.filter(post__account=account).count()
     comment_count = Comment.objects.filter(post__account=account).count()
+
     return Response(
         data={
             'post_count': post_count,
             'like_count': like_count,
-            'comment_count': comment_count
+            'comment_count': comment_count,
+            'total_views_count': total_views_count
         },
         status=status.HTTP_200_OK
     )
