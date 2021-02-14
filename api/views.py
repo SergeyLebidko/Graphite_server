@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.db.models import Sum
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -177,6 +177,15 @@ def post_stat(request):
         },
         status=status.HTTP_200_OK
     )
+
+
+class AccountViewSet(ReadOnlyModelViewSet):
+    serializer_class = AccountSerializer
+    pagination_class = CustomPagination
+
+    def get_queryset(self):
+        queryset = Account.objects.all()
+        return queryset
 
 
 class PostViewSet(ModelViewSet):
