@@ -192,10 +192,8 @@ class PostViewSet(ModelViewSet):
         return queryset
 
     def retrieve(self, request, *args, **kwargs):
-        # Если пост запрошен для просмотра (а не, например, редактирования), то увеличиваем его счетчик просмотров
-        if 'for_view' in request.query_params:
-            post = self.get_object()
-            post.views_count += 1
-            post.save()
+        post = self.get_object()
+        post.views_count += 1
+        post.save()
         result = ModelViewSet.retrieve(self, request, *args, **kwargs)
         return result
