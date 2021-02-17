@@ -184,7 +184,7 @@ class AccountViewSet(ReadOnlyModelViewSet):
     pagination_class = CustomPagination
 
     def get_queryset(self):
-        queryset = Account.objects.all()
+        queryset = Account.objects.all().order_by('-dt_created')
         return queryset
 
 
