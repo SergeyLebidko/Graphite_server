@@ -129,8 +129,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Длина токена пользователя
 ACCOUNT_TOKEN_SIZE = 32
 
-# Хост для CORS
-# При развертывании для "боевого" использования сюда должен быть вписан адрес фронт-энд сервера, а не заглушка *
-CORS_HOST = '*'
-
+# Хосты для CORS
 CORS_ORIGIN_WHITELIST = ['http://localhost:3000', 'http://127.0.0.1:3000']
