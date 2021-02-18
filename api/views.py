@@ -10,6 +10,7 @@ from .models import Account, Token, Post, PostLike, Comment
 from .serializers import AccountSerializer, PostSerializer
 from .permissions import HasAccountPermission, HasPostPermission
 from .pagination import CustomPagination
+from .full_text_search import search
 
 
 @api_view(['GET'])
@@ -185,6 +186,11 @@ class AccountViewSet(ReadOnlyModelViewSet):
 
     def get_queryset(self):
         queryset = Account.objects.all().order_by('-dt_created')
+
+        q = self.request.query_params.get('q')
+        if q:
+            return search(queryset, q, 'account')
+
         return queryset
 
 
@@ -198,6 +204,11 @@ class PostViewSet(ModelViewSet):
         account = self.request.query_params.get('account')
         if account:
             queryset = queryset.filter(account=account)
+
+        q = self.request.query_params.get('q')
+        if q:
+            return search(queryset, q, 'post')
+
         return queryset
 
     def retrieve(self, request, *args, **kwargs):
