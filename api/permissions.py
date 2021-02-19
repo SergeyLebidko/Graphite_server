@@ -18,3 +18,7 @@ class HasAccountPermission(CustomBasePermission):
 
 class HasPostPermission(CustomBasePermission):
     allowed_methods = SAFE_METHODS
+
+
+class HasCommentPermission(CustomBasePermission):
+    allowed_methods = SAFE_METHODS
