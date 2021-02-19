@@ -226,4 +226,4 @@ class CommentViewSet(ModelViewSet):
 
     def get_queryset(self):
         post = self.request.query_params.get('post')
-        return Comment.objects.filter(post=post)
+        return Comment.objects.filter(post=post).order_by('-dt_created')
