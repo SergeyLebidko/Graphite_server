@@ -3,7 +3,8 @@ from django.urls import path
 from rest_framework.routers import SimpleRouter
 
 from .views import gender_list, login, logout, logout_all_devices, register_account, check_account, \
-    update_account, change_login, change_password, remove_account, PostViewSet, account_stat, post_stat, AccountViewSet
+    update_account, change_login, change_password, remove_account, PostViewSet, account_stat, post_stat, \
+    AccountViewSet, CommentViewSet
 
 app_name = 'api'
 
@@ -25,4 +26,5 @@ urlpatterns = [
 router = SimpleRouter()
 router.register('posts', PostViewSet, basename='post')
 router.register('accounts', AccountViewSet, basename='account')
+router.register('comments', CommentViewSet, basename='comment')
 urlpatterns.extend(router.urls)

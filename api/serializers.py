@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from utils import to_hash, create_random_string
-from .models import Account, Post, Comment, PostLike
+from .models import Account, Post, Comment, PostLike, CommentLike
 
 
 class AccountSerializer(serializers.ModelSerializer):
@@ -43,4 +43,19 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
+        fields = '__all__'
+
+
+class CommentSerializer(serializers.ModelSerializer):
+
+    def to_representation(self, instance):
+        like_count = CommentLike.objects.filter(comment=instance).count()
+        result = serializers.ModelSerializer.to_representation(self, instance)
+        result['like_count'] = like_count
+        result['account_avatar'] = instance.account.avatar.url
+        result['account_username'] = instance.account.username
+        return result
+
+    class Meta:
+        model = Comment
         fields = '__all__'

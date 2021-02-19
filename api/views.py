@@ -7,8 +7,8 @@ from rest_framework import status
 
 from utils import to_hash, create_random_string
 from .models import Account, Token, Post, PostLike, Comment
-from .serializers import AccountSerializer, PostSerializer
-from .permissions import HasAccountPermission, HasPostPermission
+from .serializers import AccountSerializer, PostSerializer, CommentSerializer
+from .permissions import HasAccountPermission, HasPostPermission, HasCommentPermission
 from .pagination import CustomPagination
 from .full_text_search import search
 
@@ -217,3 +217,13 @@ class PostViewSet(ModelViewSet):
         post.save()
         result = ModelViewSet.retrieve(self, request, *args, **kwargs)
         return result
+
+
+class CommentViewSet(ModelViewSet):
+    serializer_class = CommentSerializer
+    permission_classes = [HasCommentPermission]
+    pagination_class = CustomPagination
+
+    def get_queryset(self):
+        post = self.request.query_params.get('post')
+        return Comment.objects.filter(post=post)
