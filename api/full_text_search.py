@@ -19,8 +19,13 @@ import itertools
 
 
 def search(queryset, string, queryset_type):
-    stages = [stage_1(string), stage_2(string), stage_3(string)]
-    stages.extend(stage_4(string))
+    temp_stages = [stage_1(string), stage_2(string), stage_3(string)]
+    temp_stages.extend(stage_4(string))
+
+    stages = []
+    for stage in temp_stages:
+        if stage not in stages:
+            stages.append(stage)
 
     result = []
     src_queryset = list(queryset)
@@ -50,7 +55,7 @@ def stage_4(string):
     result = []
     for count in range(len(words), 0, -1):
         for combination in itertools.combinations(words, count):
-            result.append(combination)
+            result.append(list(combination))
             clip = 1
             while any([len(word) > 5 for word in result[-1]]):
                 result.append([(word if len(word) <= 5 else word[:-clip]) for word in result[-1]])
