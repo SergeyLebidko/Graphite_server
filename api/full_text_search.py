@@ -19,6 +19,7 @@ import itertools
 
 
 def search(queryset, string, queryset_type):
+    string = string.lower()
     temp_stages = [stage_1(string), stage_2(string), stage_3(string)]
     temp_stages.extend(stage_4(string))
 
@@ -50,16 +51,14 @@ def stage_3(string):
 
 
 def stage_4(string):
-    regex = re.compile(r'[^0-9a-zA-Zа-яА-я]+')
+    regex = re.compile(r'[^0-9a-zA-Zа-яА-яЁё]+')
     words = [e for e in regex.split(string) if e]
     result = []
     for count in range(len(words), 0, -1):
         for combination in itertools.combinations(words, count):
             result.append(list(combination))
-            clip = 1
             while any([len(word) > 5 for word in result[-1]]):
-                result.append([(word if len(word) <= 5 else word[:-clip]) for word in result[-1]])
-                clip += 1
+                result.append([(word if len(word) <= 5 else word[:-1]) for word in result[-1]])
 
     return result
 
@@ -69,7 +68,6 @@ def _search(src_queryset, dst_queryset, strings, queryset_type):
     for element in src_queryset:
         find_count = 0
         for string in strings:
-            string = string.lower()
             if queryset_type == 'post':
                 find_count += (string in element.text.lower()) or (string in element.title.lower())
             elif queryset_type == 'account':
