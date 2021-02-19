@@ -2,7 +2,7 @@ from django.db import models
 
 
 class AutoDateModel(models.Model):
-    dt_created = models.DateField(auto_now_add=True)
+    dt_created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         abstract = True
