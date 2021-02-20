@@ -51,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'middleware.account_middleware',
+    'middleware.LagMiddleware'
 ]
 
 ROOT_URLCONF = 'Graphite_server.urls'
@@ -131,3 +132,6 @@ ACCOUNT_TOKEN_SIZE = 32
 
 # Хосты для CORS
 CORS_ORIGIN_WHITELIST = ['http://localhost:3000', 'http://127.0.0.1:3000']
+
+# Величина лага для имитации сетевых задержек
+LAG = 1
