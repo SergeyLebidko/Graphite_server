@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.db.models import Sum, F
+from django.db.models import Sum, Count
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.response import Response
@@ -204,6 +204,14 @@ class PostViewSet(ModelViewSet):
         account = self.request.query_params.get('account')
         if account:
             queryset = queryset.filter(account=account)
+
+        order = self.request.query_params.get('order')
+        if order == 'views':
+            queryset = queryset.order_by('-views_count')
+        if order == 'likes':
+            queryset = queryset.annotate(cnt=Count('post')).order_by('-cnt')
+        if order == 'comments':
+            queryset = queryset.annotate(cnt=Count('comment')).order_by('-cnt')
 
         q = self.request.query_params.get('q')
         if q:
