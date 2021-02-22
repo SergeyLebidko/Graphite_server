@@ -1,12 +1,12 @@
 from django.conf import settings
-from django.db.models import Sum
+from django.db.models import Sum, F
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.response import Response
 from rest_framework import status
 
 from utils import to_hash, create_random_string
-from .models import Account, Token, Post, PostLike, Comment
+from .models import Account, Token, Post, PostLike, Comment, CommentLike
 from .serializers import AccountSerializer, PostSerializer, CommentSerializer
 from .permissions import HasAccountPermission, HasPostPermission, HasCommentPermission
 from .pagination import CustomPagination
@@ -230,3 +230,35 @@ class CommentViewSet(ModelViewSet):
     def get_queryset(self):
         post = self.request.query_params.get('post')
         return Comment.objects.filter(post=post).order_by('-dt_created')
+
+
+@api_view(['GET', 'POST'])
+@permission_classes([HasAccountPermission])
+def post_like(request):
+    return _like(request, 'post')
+
+
+@api_view(['GET', 'POST'])
+@permission_classes([HasAccountPermission])
+def comment_like(request):
+    return _like(request, 'comment')
+
+
+def _like(request, _type):
+    account = request.account
+    model = {'post': PostLike, 'comment': CommentLike}[_type]
+    param = request.query_params.get(_type) if request.method == 'GET' else request.data.get(_type)
+    kwargs = {
+        'post': {'post_id': param, 'account': account},
+        'comment': {'comment_id': param, 'account': account}
+    }[_type]
+
+    if request.method == 'GET':
+        exists = model.objects.filter(**kwargs).exists()
+        return Response({'exists': exists}, status=status.HTTP_200_OK)
+
+    like, create_flag = model.objects.get_or_create(**kwargs)
+    if not create_flag:
+        like.delete()
+
+    return Response({'exists': create_flag}, status=status.HTTP_200_OK)

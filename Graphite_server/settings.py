@@ -134,4 +134,4 @@ ACCOUNT_TOKEN_SIZE = 32
 CORS_ORIGIN_WHITELIST = ['http://localhost:3000', 'http://127.0.0.1:3000']
 
 # Величина лага для имитации сетевых задержек
-LAG = 1
+LAG = 0.5

@@ -4,7 +4,7 @@ from rest_framework.routers import SimpleRouter
 
 from .views import gender_list, login, logout, logout_all_devices, register_account, check_account, \
     update_account, change_login, change_password, remove_account, PostViewSet, account_stat, post_stat, \
-    AccountViewSet, CommentViewSet
+    AccountViewSet, CommentViewSet, post_like, comment_like
 
 app_name = 'api'
 
@@ -20,7 +20,9 @@ urlpatterns = [
     path('change_password/', change_password, name='change_password'),
     path('remove_account/', remove_account, name='remove_account'),
     path('account_stat/', account_stat, name='account_stat'),
-    path('post_stat/', post_stat, name='post_stat')
+    path('post_stat/', post_stat, name='post_stat'),
+    path('post_like/', post_like, name='post_like'),
+    path('comment_like/', comment_like, name='comment_like')
 ]
 
 router = SimpleRouter()
