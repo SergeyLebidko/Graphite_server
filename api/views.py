@@ -187,6 +187,14 @@ class AccountViewSet(ReadOnlyModelViewSet):
     def get_queryset(self):
         queryset = Account.objects.all().order_by('-dt_created')
 
+        order = self.request.query_params.get('order')
+        if order == 'views':
+            queryset = queryset.annotate(cnt=Sum('post__views_count')).order_by('-cnt')
+        if order == 'likes':
+            queryset = queryset.annotate(cnt=Count('post__postlike')).order_by('-cnt')
+        if order == 'comments':
+            queryset = queryset.annotate(cnt=Count('post__comment')).order_by('-cnt')
+
         q = self.request.query_params.get('q')
         if q:
             return search(queryset, q, 'account')
