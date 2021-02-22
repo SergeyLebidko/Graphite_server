@@ -209,7 +209,7 @@ class PostViewSet(ModelViewSet):
         if order == 'views':
             queryset = queryset.order_by('-views_count')
         if order == 'likes':
-            queryset = queryset.annotate(cnt=Count('post')).order_by('-cnt')
+            queryset = queryset.annotate(cnt=Count('postlike')).order_by('-cnt')
         if order == 'comments':
             queryset = queryset.annotate(cnt=Count('comment')).order_by('-cnt')
 
