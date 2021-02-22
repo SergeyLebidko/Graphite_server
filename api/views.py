@@ -228,8 +228,13 @@ class CommentViewSet(ModelViewSet):
     pagination_class = CustomPagination
 
     def get_queryset(self):
+        queryset = Comment.objects.all().order_by('-dt_created')
+
         post = self.request.query_params.get('post')
-        return Comment.objects.filter(post=post).order_by('-dt_created')
+        if post:
+            queryset = queryset.filter(post_id=post)
+
+        return queryset
 
 
 @api_view(['GET', 'POST'])
@@ -248,6 +253,7 @@ def _like(request, _type):
     account = request.account
     model = {'post': PostLike, 'comment': CommentLike}[_type]
     param = request.query_params.get(_type) if request.method == 'GET' else request.data.get(_type)
+
     kwargs = {
         'post': {'post_id': param, 'account': account},
         'comment': {'comment_id': param, 'account': account}
