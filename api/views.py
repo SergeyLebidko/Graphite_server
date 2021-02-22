@@ -212,9 +212,11 @@ class PostViewSet(ModelViewSet):
         return queryset
 
     def retrieve(self, request, *args, **kwargs):
+        account = request.account
         post = self.get_object()
-        post.views_count += 1
-        post.save()
+        if account and account.pk != post.account.pk:
+            post.views_count += 1
+            post.save()
         result = ModelViewSet.retrieve(self, request, *args, **kwargs)
         return result
 
