@@ -131,7 +131,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 ACCOUNT_TOKEN_SIZE = 32
 
 # Хосты для CORS
-CORS_ORIGIN_WHITELIST = ['http://localhost:3000', 'http://127.0.0.1:3000']
+CORS_ORIGIN_WHITELIST = ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://127.0.0.1', 'http://localhost']
 
 # Величина лага для имитации сетевых задержек
 LAG = 0.5
